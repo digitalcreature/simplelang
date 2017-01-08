@@ -90,7 +90,7 @@ class SimpleLangParser(Parser):
         self._closure(block0)
         self._check_eof()
 
-    @graken('Expression')
+    @graken()
     def _expression_(self):
         with self._choice():
             with self._option():
@@ -200,14 +200,14 @@ class SimpleLangParser(Parser):
                 self.name_last_node('@')
                 self._token(')')
             with self._option():
-                self._NUMBER_()
+                self._number_()
             with self._option():
-                self._IDENTIFIER_()
+                self._identifier_()
             self._error('no available options')
 
     @graken('Number')
-    def _NUMBER_(self):
-        self._pattern(r'[+-]?([0-9]*.)?[0-9]+')
+    def _number_(self):
+        self._pattern(r'[+-]?([0-9]*\.)?[0-9]+')
         self.name_last_node('value')
         self.ast._define(
             ['value'],
@@ -215,7 +215,7 @@ class SimpleLangParser(Parser):
         )
 
     @graken('Identifier')
-    def _IDENTIFIER_(self):
+    def _identifier_(self):
         self._pattern(r'[a-zA-Z_@$#%][a-zA-Z0-9_@$#%]*')
         self.name_last_node('id')
         self.ast._define(
@@ -255,10 +255,10 @@ class SimpleLangSemantics(object):
     def atom(self, ast):
         return ast
 
-    def NUMBER(self, ast):
+    def number(self, ast):
         return ast
 
-    def IDENTIFIER(self, ast):
+    def identifier(self, ast):
         return ast
 
 

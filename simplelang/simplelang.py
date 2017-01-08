@@ -7,30 +7,28 @@ class SimpleLangWalker(NodeWalker):
 		self.refs = {}
 	def deref(self, value):
 		if (type(value) is str):
-			return self.refs[str]
+			return self.refs[value]
 		else:
 			return value
 	def walk_object(self, node):
-		return node
+		for expr in node:
+			print(self.deref(self.walk(expr)))
 	def walk_Number(self, node):
-		print (node.value)
 		return float(node.value)
 	def walk_Identifier(self, node):
-		return node
+		return node.id
 	def walk_Add(self, node):
-		return self.deref(node.left) + self.deref(node.right)
-	def walk_Sub(self, node):
-		return self.deref(node.left) - self.deref(node.right)
-	def walk_Multply(self, node):
-		return self.deref(node.left) * self.deref(node.right)
+		return self.deref(self.walk(node.left)) + self.deref(self.walk(node.right))
+	def walk_Subtract(self, node):
+		return self.deref(self.walk(node.left)) - self.deref(self.walk(node.right))
+	def walk_Multiply(self, node):
+		return self.deref(self.walk(node.left)) * self.deref(self.walk(node.right))
 	def walk_Divide(self, node):
-		return self.deref(node.left) / self.deref(node.right)
+		return self.deref(self.walk(node.left)) / self.deref(self.walk(node.right))
 	def walk_Assign(self, node):
-		self.refs[node.left] = node.right
-		return node.right
-	def walk_Expression(self, node):
-		print(self.deref(node))
-		return node
+		right = self.walk(node.right)
+		self.refs[self.walk(node.left)] = self.deref(right)
+		return right
 
 if __name__ == "__main__":
 	from sys import argv

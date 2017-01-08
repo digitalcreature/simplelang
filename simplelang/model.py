@@ -29,11 +29,6 @@ class ModelBase(Node):
     pass
 
 
-class Expression(ModelBase):
-    def __init__(self, **_kwargs_):
-        super(Expression, self).__init__(**_kwargs_)
-
-
 class Assign(ModelBase):
     def __init__(self,
                  left=None,
