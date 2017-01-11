@@ -216,8 +216,9 @@ class SimpleLangParser(Parser):
 
     @graken('Identifier')
     def _identifier_(self):
-        self._pattern(r'[a-zA-Z_@$#%][a-zA-Z0-9_@$#%]*')
+        self._pattern(r'(?!\d)[\w_@$#%]+')
         self.name_last_node('id')
+        self._check_name()
         self.ast._define(
             ['id'],
             []
